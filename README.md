@@ -10,7 +10,7 @@ The primary objective was to investigate key patterns that influence whether a c
 
 * Downloaded the full dataset from UCI Machine Learning Repository.
 * The dataset was quite extensive (\~41K+ rows & 26 columns) with mixed data types: categorical, numeric, and date-like fields.
-* Instead of analyzing the flat file directly, we designed a **normalized relational schema** to better handle:
+* Instead of analyzing the flat file directly, I designed a **normalized relational schema** to better handle:
 
   * Redundancies
   * Dependencies between entities
