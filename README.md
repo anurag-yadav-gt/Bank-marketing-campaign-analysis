@@ -93,7 +93,7 @@ One of the most challenging & rewarding phases involved extensive **SQL feature 
 * **Employment Stability Classification:**
 
   * Created a complex engineered feature combining:
-
+    
     * `nr_employed` (number of employees)
     * `emp_var_rate` (employment variation rate)
   * Initially attempted joint CASE WHEN conditions but faced floating-point precision challenges.
