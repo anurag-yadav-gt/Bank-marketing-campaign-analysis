@@ -9,7 +9,7 @@ The primary objective was to investigate key patterns that influence whether a c
 ### 1️⃣ **Data Acquisition & Normalization**
 
 * Downloaded the full dataset from UCI Machine Learning Repository.
-* The dataset was quite extensive (\~41K rows & 26 columns) with mixed data types: categorical, numeric, and date-like fields.
+* The dataset was quite extensive (\~41K+ rows & 26 columns) with mixed data types: categorical, numeric, and date-like fields.
 * Instead of analyzing the flat file directly, we designed a **normalized relational schema** to better handle:
 
   * Redundancies
@@ -88,22 +88,77 @@ Performed deep **univariate, bivariate, and multivariate exploration** using:
 
 ### 5️⃣ **SQL Feature Engineering (Advanced)**
 
-One of the most challenging & rewarding phases involved extensive **SQL feature engineering** inside PostgreSQL:
+Throughout the project, multiple new features were created across different tables to better capture the underlying patterns in the bank marketing campaign data. These engineered features helped in producing meaningful insights and effective visualizations.
 
-* **Employment Stability Classification:**
+🔶 1. Clients Table
+age_group
+Categorized clients into age segments for demographic analysis:
 
-  * Created a complex engineered feature combining:
-    
-    * `nr_employed` (number of employees)
-    * `emp_var_rate` (employment variation rate)
-  * Initially attempted joint CASE WHEN conditions but faced floating-point precision challenges.
-  * Solved floating-point tolerance issues using absolute difference logic (`abs()`), dynamic binning thresholds, and separate feature extraction.
-* **Two new independent stability features engineered:**
+Young_adults: 17–28
 
-  * `nr_employed_stability`
-  * `emp_var_rate_stability`
-* These features allowed for better visual interpretation and business relevance during Power BI visualization.
-* This phase solidified practical experience handling **double precision vs integer errors**, which occur frequently when comparing floating-point fields directly in SQL.
+Adults: 29–46
+
+Senior_adults: 47–60
+
+Elderly: 61+
+
+financial_risk
+Classified clients based on their loan, housing, and default status to assess financial risk profile:
+
+low_risk: No loan, housing, or default.
+
+moderate_risk: Having either loan, housing loan, or default.
+
+unknown_risk: Others.
+
+🔶 2. Contacts Table
+call_duration_band
+Discretized call durations into meaningful intervals to observe conversion likelihood across durations:
+
+<1min, 1-3min, 3-5min, 5-10min, 10+min, outlier.
+
+🔶 3. Campaigns Table
+repeated_contacts
+Binned the number of contacts made during a campaign into repetition buckets:
+
+1, 2-3, 4-5, 6-10, 10+
+
+contacted_before
+Created a binary flag to indicate whether a client was contacted previously:
+
+contacted_before (pdays != 999)
+
+not_contacted_recently (pdays = 999)
+
+🔶 4. Economics Table
+economic_sentiment
+Classified consumer confidence index (cons_conf_idx) into sentiment buckets:
+
+Very Low, Low, Moderate, Neutral to High
+
+euirbor_band
+Bucketed Euribor 3-month rate (euribor3m) into interest rate bands:
+
+low, moderate, high
+
+nr_employed_stability
+Grouped number of employees (nr_employed) into employment stability levels:
+
+very_stable, stable, slightly_unstable, unstable, very_unstable
+
+emp_var_rate_stability
+Categorized employment variation rate (emp_var_rate) into stability buckets:
+
+very_stable, stable, slightly_unstable, unstable, very_unstable
+
+👉 These engineered features were critical for:
+
+Improving segmentation
+
+Simplifying complex numerical variables into interpretable categories
+
+Enabling stronger correlations and patterns during analysis and Power BI visualizations
+
 
 
 ### 6️⃣ **Data Modeling & Visualization (Power BI)**
